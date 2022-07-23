@@ -13,13 +13,25 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef EVT_3_DEFINITIONS_H_
-#define EVT_3_DEFINITIONS_H_
+#ifndef EVT_3_UTILS_H_
+#define EVT_3_UTILS_H_
+
+#include <string>
+#include <fstream>
 
 namespace metavision_ros_tools
 {
-namespace EVT3
+namespace evt_3_utils
 {
+  class MessageUpdater {
+  public:
+    ~MessageUpdater() {}
+    virtual void addEvent(
+      uint64_t ts_ros, uint16_t ex, uint16_t ey, uint8_t polarity) = 0;
+    virtual uint64_t getROSTime() = 0;
+    virtual void finished() = 0;
+  };
+
 enum Code {
   ADDR_Y = 0b0000,       // 0
   ADDR_X = 0b0010,       // 2
@@ -60,61 +72,6 @@ enum SubType {
   MASTER_TH_DROP_EVENT = 0xED8,
   MASTER_EVT_DROP_EVENT = 0xEDA
 };
-
-static inline std::string toString(const SubType s)
-{
-  switch (s) {
-    case MASTER_SYSTEM_TEMPERATURE:
-      return ("MASTER_SYSTEM_TEMPERATURE");
-    case MASTER_SYSTEM_VOLTAGE:
-      return ("MASTER_SYSTEM_VOLTAGE");
-    case MASTER_SYSTEM_IN_EVENT_COUNT:
-      return ("MASTER_SYSTEM_IN_EVENT_COUNT");
-    case MASTER_SYSTEM_IN_EVENT_SEQ_ERROR:
-      return ("MASTER_SYSTEM_IN_EVENT_SEQ_ERROR");
-    case MASTER_SYSTEM_IN_EVENT_TIME_ERROR:
-      return ("MASTER_SYSTEM_IN_EVENT_TIME_ERROR");
-    case MASTER_SYSTEM_OUT_EVENT_COUNT:
-      return ("MASTER_SYSTEM_OUT_EVENT_COUNT");
-    case MASTER_SYSTEM_OUT_EVENT_SEQ_ERROR:
-      return ("MASTER_SYSTEM_OUT_EVENT_SEQ_ERROR");
-    case MASTER_SYSTEM_OUT_EVENT_TIME_ERROR:
-      return ("MASTER_SYSTEM_OUT_EVENT_TIME_ERROR");
-    case MASTER_IN_TD_EVENT_COUNT:
-      return ("MASTER_IN_TD_EVENT_COUNT");
-    case MASTER_IN_APS_EVENT_COUNT:
-      return ("MASTER_IN_APS_EVENT_COUNT");
-    case MASTER_RATE_CONTROL_TD_EVENT_COUNT:
-      return ("MASTER_RATE_CONTROL_TD_EVENT_COUNT");
-    case MASTER_RATE_CONTROL_APS_EVENT_COUNT:
-      return ("MASTER_RATE_CONTROL_APS_EVENT_COUNT");
-    case MASTER_START_OF_FRAME:
-      return ("MASTER_START_OF_FRAME");
-    case MASTER_END_OF_FRAME:
-      return ("MASTER_END_OF_FRAME");
-    case MASTER_MIPI_PADDING:
-      return ("MASTER_MIPI_PADDING");
-    case LOW_POWER_STATE_ENTRY_1:
-      return ("LOW_POWER_STATE_ENTRY_1");
-    case LOW_POWER_STATE_ENTRY_2:
-      return ("LOW_POWER_STATE_ENTRY_2");
-    case LOW_POWER_STATE_DEEP_EXIT:
-      return ("LOW_POWER_STATE_DEEP_EXIT");
-    case END_OF_TEST_TASK:
-      return ("END_OF_TEST_TASK");
-    case USB_PACKET_INFO:
-      return ("USB_PACKET_INFO");
-    case DUMMY:
-      return ("DUMMY");
-    case MASTER_TL_DROP_EVENT:
-      return ("MASTER_TL_DROP_EVENT");
-    case MASTER_TH_DROP_EVENT:
-      return ("MASTER_TH_DROP_EVENT");
-    case MASTER_EVT_DROP_EVENT:
-      return ("MASTER_EVT_DROP_EVENT");
-  }
-  return ("UKNOWN");
-}
 
 struct __attribute__((packed)) Event
 {
@@ -180,7 +137,15 @@ struct __attribute__((packed)) Others
   unsigned int code : 4;
 };
 
-}  // namespace EVT3
+std::string toString(const SubType s);
+
+size_t write(
+  std::fstream & out, const uint8_t * p, const size_t num_bytes,
+  const uint64_t time_base, const std::string & encoding,
+  uint32_t * last_evt_stamp);
+
+size_t read(const std::string & inFile, MessageUpdater * updater);
+  }  // namespace evt_3_utils
 }  // namespace metavision_ros_tools
 
-#endif  // EVT_3_DEFINITIONS_H_
+#endif  // EVT_3_UTILS_H_

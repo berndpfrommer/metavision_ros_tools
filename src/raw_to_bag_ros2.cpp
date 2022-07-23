@@ -136,17 +136,11 @@ size_t process_raw(
   while (in.read(reinterpret_cast<char *>(buffer), BUF_SIZE * sizeof(EVT3::Event))) {
     size_t numRead = in.gcount() / sizeof(EVT3::Event);
     for (size_t i = 0; i < numRead; i++) {
-      if (numEvents % 1000 == 0) {
-        const uint64_t ts_ros = t0_ros.nanoseconds() + (ts - t0_sensor) * 1000LL;
-        std::cout << ts_ros << std::endl;
-      }
-
       switch (buffer[i].code) {
         case EVT3::Code::ADDR_X: {
           const EVT3::AddrX * e = reinterpret_cast<const EVT3::AddrX *>(&buffer[i]);
           if (t0_sensor == 0) {  // this is the first full event ever received
             t0_sensor = ts;
-            std::cout << "start ts: " << ts << std::endl;
           }
           const uint64_t ts_ros = t0_ros.nanoseconds() + (ts - t0_sensor) * 1000LL;
           if (msg.events.empty()) {  // starting new message

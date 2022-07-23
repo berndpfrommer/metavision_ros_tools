@@ -31,11 +31,13 @@ include_directories(
 )
 
 #
-# --------- bag to text converter -----
+# --------- bag conversion tools
 #
-add_executable(bag_to_raw src/bag_to_raw_ros1.cpp)
+add_executable(bag_to_raw src/bag_to_raw_ros1.cpp src/evt_3_utils.cpp)
 target_link_libraries(bag_to_raw ${catkin_LIBRARIES})
 
+add_executable(raw_to_bag src/raw_to_bag_ros1.cpp src/evt_3_utils.cpp)
+target_link_libraries(raw_to_bag ${catkin_LIBRARIES})
 
 #############
 ## Install ##
