@@ -16,21 +16,22 @@
 #ifndef EVT_3_UTILS_H_
 #define EVT_3_UTILS_H_
 
-#include <string>
 #include <fstream>
+#include <string>
 
 namespace metavision_ros_tools
 {
 namespace evt_3_utils
 {
-  class MessageUpdater {
-  public:
-    ~MessageUpdater() {}
-    virtual void addEvent(
-      uint64_t ts_ros, uint16_t ex, uint16_t ey, uint8_t polarity) = 0;
-    virtual uint64_t getROSTime() = 0;
-    virtual void finished() = 0;
-  };
+class MessageUpdater
+{
+public:
+  ~MessageUpdater() {}
+  virtual void addEvent(
+    uint64_t ts_ros, uint16_t ex, uint16_t ey, uint8_t polarity) = 0;
+  virtual uint64_t getROSTime() = 0;
+  virtual void finished() = 0;
+};
 
 enum Code {
   ADDR_Y = 0b0000,       // 0
@@ -145,7 +146,7 @@ size_t write(
   uint32_t * last_evt_stamp);
 
 size_t read(const std::string & inFile, MessageUpdater * updater);
-  }  // namespace evt_3_utils
+}  // namespace evt_3_utils
 }  // namespace metavision_ros_tools
 
 #endif  // EVT_3_UTILS_H_

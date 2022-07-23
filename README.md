@@ -5,7 +5,9 @@ camera data under ROS and ROS2
 
 ## Supported platforms
 
-Currently tested on Ubuntu 20.04 under under ROS Noetic and ROS2 Galactic.
+Currently tested on Ubuntu 20.04 under under ROS Noetic and ROS2
+Galactic. Only tested on Metavision Gen3 sensors, will almost
+certainly not work on Gen4 sensors.
 
 
 ## How to build
@@ -40,7 +42,8 @@ colcon build --symlink-install --cmake-args -DCMAKE_BUILD_TYPE=RelWithDebInfo  #
 
 ### Data conversion tools
 
-These tools convert between Gen3 sensor raw data and rosbags (``event_array_msgs``)
+These tools convert between Gen3 sensor (EVT 3.0) raw data (.raw
+files) and rosbags (``event_array_msgs``).
 
 How to use (ROS1):
 ```

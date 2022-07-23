@@ -29,7 +29,8 @@ using event_array_msgs::mono::decode_t_x_y_p;
 
 namespace evt_3_utils
 {
-std::string toString(const SubType s) {
+std::string toString(const SubType s)
+{
   switch (s) {
     case MASTER_SYSTEM_TEMPERATURE:
       return ("MASTER_SYSTEM_TEMPERATURE");

@@ -13,16 +13,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <event_array_msgs/decode.h>
 #include <event_array_msgs/EventArray.h>
+#include <event_array_msgs/decode.h>
+#include <ros/ros.h>
+#include <rosbag/bag.h>
+#include <rosbag/view.h>
 #include <unistd.h>
 
 #include <chrono>
 #include <fstream>
-#include <ros/ros.h>
-#include <rosbag/bag.h>
-#include <rosbag/view.h>
-
 
 #include "evt_3_utils.h"
 
@@ -35,8 +34,6 @@ void usage()
 
 namespace metavision_ros_tools
 {
-using event_array_msgs::mono::bytes_per_event;
-using event_array_msgs::mono::decode_t_x_y_p;
 using event_array_msgs::EventArray;
 
 // you may have to modify the header string to match your system

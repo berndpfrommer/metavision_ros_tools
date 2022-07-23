@@ -35,8 +35,8 @@ ament_auto_find_build_dependencies(REQUIRED ${ROS2_DEPENDENCIES})
 #
 # ---- conversion tools
 #
-ament_auto_add_executable(bag_to_raw  src/bag_to_raw_ros2.cpp)
-ament_auto_add_executable(raw_to_bag  src/raw_to_bag_ros2.cpp)
+ament_auto_add_executable(bag_to_raw  src/bag_to_raw_ros2.cpp src/evt_3_utils.cpp)
+ament_auto_add_executable(raw_to_bag  src/raw_to_bag_ros2.cpp src/evt_3_utils.cpp)
 
 # the node must go into the paroject specific lib directory or else
 # the launch file will not find it
@@ -60,7 +60,7 @@ if(BUILD_TESTING)
   ament_copyright()
   ament_cppcheck(LANGUAGE c++)
   ament_cpplint(FILTERS "-build/include,-runtime/indentation_namespace")
-  ament_clang_format()
+  ament_clang_format(CONFIG_FILE .clang-format)
   ament_flake8()
   ament_lint_cmake()
   ament_pep257()
